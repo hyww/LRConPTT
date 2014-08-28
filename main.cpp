@@ -98,7 +98,7 @@ int main(int argc, char **argv){
 				inacc+=0.1;
 			}
 			total+=gap;
-			printf("\25[30;40m^L%.1lf\n0\25[m\n", gap);
+			printf("\25[30;40m^L%.1lf\n\25[30;40m0\25[m\n", gap);
 			lyric=i->second;
 			continue;
 		}
