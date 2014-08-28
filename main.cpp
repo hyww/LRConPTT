@@ -81,6 +81,8 @@ int main(int argc, char **argv){
 		
 	}
 	
+	printf("^LS1\n5\n^L\n4\n^L\n3\n^L\n2\n^L\n1\n");
+	
 	for(map<Timing, char *, timingComp>::iterator i=lyrics.begin();i!=lyrics.end();i++){
 		if(i==lyrics.begin()){
 			ttmp=i->first;
@@ -96,7 +98,7 @@ int main(int argc, char **argv){
 				inacc+=0.1;
 			}
 			total+=gap;
-			printf("^L%.1lf\n\n", gap);
+			printf("^L%.1lf\n0\n", gap);
 			lyric=i->second;
 			continue;
 		}
@@ -123,7 +125,7 @@ int main(int argc, char **argv){
 	
 	printf("^LE\n");
 	printf("%s\n", lyric);
-	cout<<total<<" "<<inacc<<endl;
+	//cout<<total<<" "<<inacc<<endl;
 	
 	//system("pause");
 	return 0;
