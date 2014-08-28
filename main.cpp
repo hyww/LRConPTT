@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-
+#include <map>
 
 using namespace std;
 
@@ -12,6 +12,16 @@ typedef struct timing{
 	int m;
 	double s;
 }Timing;
+
+struct timingComp{
+	bool operator()(const Timing& a, const Timing& b){
+		if(a.m<b.m)return true;
+		else if(a.m==b.m){
+			return a.s<b.s;
+		}
+		else return false;
+	}
+};
 
 int main(int argc, char **argv){
 	ifstream fin;
@@ -21,6 +31,7 @@ int main(int argc, char **argv){
 	char *cstrin, *lyric;
 	vector<Timing> timings;
 	Timing ttmp;
+	map<Timing, char *, timingComp> lyrics;
 	
 	fin.open(argv[1]);
 	while(getline(fin, strin)){	//read in lrc file line by line
@@ -39,23 +50,30 @@ int main(int argc, char **argv){
 				ttmp.m=atoi(tok);
 				ttmp.s=atof(tok+3);
 				timings.push_back(ttmp);
-				cout<<"timing "<<ttmp.m<<" "<<ttmp.s<<endl;
+				//cout<<"timing "<<ttmp.m<<" "<<ttmp.s<<endl;
 			}
 			else{
 				lyric=new char[strlen(strstr(strin.c_str(), tok))+1];
 				strcpy(lyric, strstr(strin.c_str(), tok));
+				for(vector<Timing>::iterator i=timings.begin();i!=timings.end();i++){
+					lyrics.insert(pair<Timing, char *>(*i, lyric));
+				}
 				
-				
-				cout<<"lyric "<<lyric<<endl;
+				//cout<<"lyric "<<lyric<<endl;
 				break;
 			}
 			
 			tok=strtok(NULL, "[]");
 		}
 		
-		
-		
 	}
+	
+	for(map<Timing, char *, timingComp>::iterator i=lyrics.begin();i!=lyrics.end();i++){
+		cout<<i->first.m<<" "<<i->first.s<<" "<<i->second<<endl;
+	}
+	
+	
+	
 	system("pause");
 	return 0;
 }
