@@ -81,7 +81,7 @@ int main(int argc, char **argv){
 		
 	}
 	
-	printf("\25[30;40m^LS1\n\25[30;40m5\n\25[30;40m^L\n\25[30;40m4\n\25[30;40m^L\n\25[30;40m3\n\25[30;40m^L\n\25[30;40m2\n\25[30;40m^L\n\25[30;40m1\n");
+	printf("\25[30;40m^LS1\n5\n\25[30;40m^L\n4\n\25[30;40m^L\n3\n\25[30;40m^L\n2\n\25[30;40m^L\n1\n");
 	
 	for(map<Timing, char *, timingComp>::iterator i=lyrics.begin();i!=lyrics.end();i++){
 		if(i==lyrics.begin()){
@@ -98,7 +98,7 @@ int main(int argc, char **argv){
 				inacc+=0.1;
 			}
 			total+=gap;
-			printf("\25[30;40m^L%.1lf\n\25[30;40m0\25[m\n", gap);
+			printf("\25[30;40m^L%.1lf\n0\25[m\n", gap);
 			lyric=i->second;
 			continue;
 		}
