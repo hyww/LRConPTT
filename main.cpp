@@ -36,7 +36,8 @@ int main(int argc, char **argv){
 	double gap;
 	double inacc=0;
 	double total=0;
-	
+	double offset=0;
+	if(argc>2)offset=atof(argv[2]);
 	fin.open(argv[1]);
 	while(getline(fin, strin)){	//read in lrc file line by line
 		
@@ -83,14 +84,14 @@ int main(int argc, char **argv){
 	for(map<Timing, char *, timingComp>::iterator i=lyrics.begin();i!=lyrics.end();i++){
 		if(i==lyrics.begin()){
 			ttmp=i->first;
-			gap=(ttmp.m)*60+ttmp.s;
+			gap=(ttmp.m)*60+ttmp.s+offset;
 			inacc+=round(gap*10)/10-gap;
 			gap=round(gap*10)/10;
-			if(inacc>0){
+			if(inacc>0.05){
 				gap-=0.1;
 				inacc-=0.1;
 			}
-			else if(inacc<0){
+			else if(inacc<-0.05){
 				gap+=0.1;
 				inacc+=0.1;
 			}
