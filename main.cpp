@@ -30,14 +30,14 @@ int main(int argc, char **argv){
 	char *tok, *stok;
 	char *cstrin, *lyric;
 	vector<Timing> timings;
-	Timing ttmp;
+	Timing ttmp, ttmp2;
 	map<Timing, char *, timingComp> lyrics;
 	
 	fin.open(argv[1]);
 	while(getline(fin, strin)){	//read in lrc file line by line
-		timings.clear();
+		
 		if(strin[0]!='['){
-			cout<<"not"<<strin[0]<<endl;
+			//cout<<"not"<<strin[0]<<endl;
 			continue;
 		}
 		cstrin=new char[strin.size()+1];
@@ -58,22 +58,43 @@ int main(int argc, char **argv){
 				for(vector<Timing>::iterator i=timings.begin();i!=timings.end();i++){
 					lyrics.insert(pair<Timing, char *>(*i, lyric));
 				}
-				
+				timings.clear();
 				//cout<<"lyric "<<lyric<<endl;
 				break;
 			}
 			
 			tok=strtok(NULL, "[]");
 		}
+		if(timings.size()>0){
+			lyric=new char[1];
+			strcpy(lyric, "");
+			for(vector<Timing>::iterator i=timings.begin();i!=timings.end();i++){
+				lyrics.insert(pair<Timing, char *>(*i, lyric));
+			}
+			timings.clear();
+		}
 		
 	}
 	
 	for(map<Timing, char *, timingComp>::iterator i=lyrics.begin();i!=lyrics.end();i++){
-		cout<<i->first.m<<" "<<i->first.s<<" "<<i->second<<endl;
+		if(i==lyrics.begin()){
+			ttmp=i->first;
+			printf("^L%.1lf\n\n", (ttmp.m)*60+ttmp.s);
+			lyric=i->second;
+			continue;
+		}
+		printf("^L%.1lf\n", (i->first.m-ttmp.m)*60+i->first.s-ttmp.s);
+		printf("%s\n", lyric);
+		ttmp=i->first;
+		lyric=i->second;
+		
+		//cout<<i->first.m<<" "<<i->first.s<<" "<<i->second<<endl;
 	}
 	
+	printf("^LE\n");
+	printf("%s\n", lyric);
 	
 	
-	system("pause");
+	//system("pause");
 	return 0;
 }
