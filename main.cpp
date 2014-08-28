@@ -81,7 +81,7 @@ int main(int argc, char **argv){
 		
 	}
 	
-	printf("^LS1\n5\n^L\n4\n^L\n3\n^L\n2\n^L\n1\n");
+	printf("\25[30;40m^LS1\n\25[30;40m5\n\25[30;40m^L\n\25[30;40m4\n\25[30;40m^L\n\25[30;40m3\n\25[30;40m^L\n\25[30;40m2\n\25[30;40m^L\n\25[30;40m1\n");
 	
 	for(map<Timing, char *, timingComp>::iterator i=lyrics.begin();i!=lyrics.end();i++){
 		if(i==lyrics.begin()){
@@ -98,7 +98,7 @@ int main(int argc, char **argv){
 				inacc+=0.1;
 			}
 			total+=gap;
-			printf("^L%.1lf\n0\n", gap);
+			printf("\25[30;40m^L%.1lf\n0\25[m\n", gap);
 			lyric=i->second;
 			continue;
 		}
@@ -115,7 +115,7 @@ int main(int argc, char **argv){
 			inacc+=0.1;
 		}
 		total+=gap;
-		printf("^L%.1lf\n", gap);
+		printf("\25[30;40m^L%.1lf\25[m\n", gap);
 		printf("%s\n", lyric);
 		ttmp=i->first;
 		lyric=i->second;
@@ -123,7 +123,7 @@ int main(int argc, char **argv){
 		//cout<<i->first.m<<" "<<i->first.s<<" "<<i->second<<endl;
 	}
 	
-	printf("^LE\n");
+	printf("\25[30;40m^LE\25[m\n");
 	printf("%s\n", lyric);
 	//cout<<total<<" "<<inacc<<endl;
 	
