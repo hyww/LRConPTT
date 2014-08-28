@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <cmath>
 
 using namespace std;
 
@@ -32,6 +33,9 @@ int main(int argc, char **argv){
 	vector<Timing> timings;
 	Timing ttmp, ttmp2;
 	map<Timing, char *, timingComp> lyrics;
+	double gap;
+	double inacc=0;
+	double total=0;
 	
 	fin.open(argv[1]);
 	while(getline(fin, strin)){	//read in lrc file line by line
@@ -79,11 +83,36 @@ int main(int argc, char **argv){
 	for(map<Timing, char *, timingComp>::iterator i=lyrics.begin();i!=lyrics.end();i++){
 		if(i==lyrics.begin()){
 			ttmp=i->first;
-			printf("^L%.1lf\n\n", (ttmp.m)*60+ttmp.s);
+			gap=(ttmp.m)*60+ttmp.s;
+			inacc+=round(gap*10)/10-gap;
+			gap=round(gap*10)/10;
+			if(inacc>0){
+				gap-=0.1;
+				inacc-=0.1;
+			}
+			else if(inacc<0){
+				gap+=0.1;
+				inacc+=0.1;
+			}
+			total+=gap;
+			printf("^L%.1lf\n\n", gap);
 			lyric=i->second;
 			continue;
 		}
-		printf("^L%.1lf\n", (i->first.m-ttmp.m)*60+i->first.s-ttmp.s);
+		gap=(i->first.m-ttmp.m)*60+i->first.s-ttmp.s;
+		
+		inacc+=round(gap*10)/10-gap;
+		gap=round(gap*10)/10;
+		if(inacc>0){
+			gap-=0.1;
+			inacc-=0.1;
+		}
+		else if(inacc<0){
+			gap+=0.1;
+			inacc+=0.1;
+		}
+		total+=gap;
+		printf("^L%.1lf\n", gap);
 		printf("%s\n", lyric);
 		ttmp=i->first;
 		lyric=i->second;
@@ -93,7 +122,7 @@ int main(int argc, char **argv){
 	
 	printf("^LE\n");
 	printf("%s\n", lyric);
-	
+	cout<<total<<" "<<inacc<<endl;
 	
 	//system("pause");
 	return 0;
